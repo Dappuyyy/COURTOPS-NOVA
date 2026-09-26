@@ -51,7 +51,12 @@ html,body{min-height:-webkit-fill-available}.portal,.umpire-compact,.umpire-full
 .co84-form .field{min-width:0}.co84-form input[type=text]{width:100%;min-width:0;font-size:16px}.co84-preview{margin:12px 0;padding:12px;border:1px solid #badcd5;border-radius:12px;background:#eef9f6;overflow-wrap:anywhere}.co84-preview strong{display:block;color:#245e59}.co84-upcoming{margin-top:14px;padding:14px;border:1px solid #ffffff2a;border-radius:17px;background:#ffffff0b;color:white}.co84-upcoming h2{margin:0 0 10px;color:#ffd4c9}.co84-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:8px}.co84-card{min-width:0;padding:11px;border:1px solid #ffffff22;border-radius:13px;background:#ffffff0c}.co84-card b{display:block;overflow-wrap:anywhere;white-space:normal!important}.co84-card small{color:#e3d5e8}.co84-card em{display:block;color:#ffca65;font-style:normal;font-weight:900}.co84-row{display:flex;align-items:center;justify-content:space-between;gap:9px;padding:9px;border:1px solid var(--line);border-radius:11px;background:white;margin-top:7px}.co84-row b{display:block;overflow-wrap:anywhere}.co84-row small{display:block;color:var(--muted)}.co84-row .actions{margin:0;flex-wrap:nowrap}.co84-row button{min-height:38px;padding:6px 9px}.match .teamline b,.display-live-card .scoreline b,.display-side-card .teamline b{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;overflow-wrap:anywhere}@media(max-width:650px){.co84-row{align-items:stretch;flex-direction:column}.co84-row .actions{justify-content:flex-end}.co84-cards{grid-template-columns:1fr}}
 
 /* V0.8.6 */.co86-list .co83-row .actions{display:flex;gap:8px;flex-wrap:nowrap}.co86-list .co83-row .btn{min-width:74px}.co86-list small{overflow-wrap:anywhere}.co86-preview{padding:12px;border:1px solid #badcd5;border-radius:12px;background:#eef9f6;color:#245e59;margin-top:10px}.co86-preview ol{margin:6px 0;padding-left:24px}.co86-preview li{overflow-wrap:anywhere}.co86-qr{display:grid;place-items:center;padding:26px!important;background:#fff!important;border:2px solid #eee!important;border-radius:16px;min-height:unset!important;width:max-content;max-width:100%;margin:12px auto!important}.co86-qr canvas,.co86-qr img{display:block!important;width:min(78vw,520px)!important;height:auto!important;max-width:100%!important;image-rendering:auto!important}.co86-qr-modal{width:min(96vw,820px)!important}.co86-qr-actions{display:flex;flex-wrap:wrap;gap:8px}.co86-qr-actions .btn{flex:1;min-width:130px}@media(max-width:680px){.co86-list .co83-row .actions{width:100%}.co86-qr{padding:18px!important}.co86-qr-actions .btn{min-width:100%}}
-</style></head><body><section id="authGate" class="auth-gate hidden"><div class="auth-card"><span class="eyebrow">COURTOPS NOVA ACCOUNT · V1.2</span><h1>Plan. Officiate.<br>Display. Sync.</h1><p>Masuk agar data turnamen terpisah berdasarkan akun dan siap disinkronkan melalui Supabase.</p><button id="googleLogin" class="google-btn">LANJUTKAN DENGAN GOOGLE</button><button id="localMode" class="auth-local">LANJUTKAN MODE LOKAL</button><div id="authWarning" class="auth-warning hidden">Supabase belum dikonfigurasi. Isi COURTOPS_CONFIG pada index.html setelah project Supabase siap.</div></div></section><div id="controlApp" class="hidden"><main class="app"><header class="top"><div class="brand"><div class="logo">N2</div><div><h1>COURTOPS NOVA</h1><p>Bracket 8/16/32 + Juara 3 · NOVA V1.2</p></div></div><div class="row"><div id="accountChip" class="account-chip hidden"><span id="accountName">Akun</span></div><button id="helpTop" class="icon">?</button></div></header><section id="home" class="screen active"></section><section id="events" class="screen"></section><section id="matches" class="screen"></section><section id="courts" class="screen"></section><section id="more" class="screen"></section></main><nav class="nav"><button class="active" data-screen="home"><b>⌂</b>Home</button><button data-screen="events"><b>◇</b>Events</button><button data-screen="matches"><b>●</b>Matches</button><button data-screen="courts"><b>▦</b>Courts</button><button data-screen="more"><b>•••</b>More</button></nav></div><div id="portalApp" class="hidden"></div><div id="displayApp" class="hidden"></div><div id="modal" class="modal hidden"><div class="modal-card"><div class="modal-head"><div><span id="modalEye" class="eyebrow">CourtOps</span><h2 id="modalTitle"></h2></div><button id="modalClose" class="close">✕</button></div><div id="modalBody"></div><div id="modalActions" class="modal-actions"></div></div></div><div id="toast" class="toast hidden"></div><script>
+</style>
+<style id="co140Style">
+.co140-stage{margin-top:14px}.co140-bracket{display:flex;gap:44px;overflow-x:auto;padding:12px 16px 28px;scroll-snap-type:x proximity}.co140-round{min-width:260px;display:flex;flex-direction:column;scroll-snap-align:start}.co140-round h2,.co140-bronze h2{margin:0 0 12px;color:#ffca65;font-size:.8rem;letter-spacing:.12em}.co140-round-body{display:flex;flex:1;flex-direction:column;justify-content:space-around;gap:18px}.co140-match{position:relative;min-height:108px;padding:9px;border:1px solid #ffffff24;border-radius:16px;background:linear-gradient(145deg,#ffffff12,#ffffff08);box-shadow:0 12px 35px #0003;transition:.45s ease}.co140-match:after{content:"";position:absolute;top:50%;left:100%;width:45px;height:2px;background:linear-gradient(90deg,#79c8b7,#ffffff30)}.co140-round:last-child .co140-match:after{display:none}.co140-match.live{border-color:#ffca65;box-shadow:0 0 0 1px #ffca6544,0 12px 35px #0003;animation:co140Pulse 1.8s infinite}.co140-match.done{border-color:#79c8b766}.co140-match header{display:flex;justify-content:space-between;margin-bottom:6px;color:#cfc3d5;font-size:.62rem;font-weight:900}.co140-match header b{color:#79c8b7}.co140-team{display:grid;grid-template-columns:minmax(0,1fr) 28px;gap:8px;align-items:center;padding:8px;border-top:1px solid #ffffff15}.co140-team span{overflow-wrap:anywhere;font-weight:850}.co140-team strong{text-align:center;font-size:1.15rem}.co140-team.winner{border-radius:9px;background:#79c8b719;color:#aaf0df}.co140-team.winner span:before{content:"✓ ";color:#79c8b7}.co140-bronze{max-width:540px;margin:14px auto 0;padding:13px;border:1px solid #dca43f66;border-radius:16px;background:#dca43f14}.co140-bronze .co140-team{color:#fff}@keyframes co140Pulse{50%{transform:translateY(-2px);box-shadow:0 0 24px #ffca6540}}@media(max-width:760px){.co140-bracket{gap:24px;padding-left:2px}.co140-round{min-width:230px}.co140-match:after{width:25px}}
+</style>
+
+</head><body><section id="authGate" class="auth-gate hidden"><div class="auth-card"><span class="eyebrow">COURTOPS NOVA ACCOUNT · V1.2</span><h1>Plan. Officiate.<br>Display. Sync.</h1><p>Masuk agar data turnamen terpisah berdasarkan akun dan siap disinkronkan melalui Supabase.</p><button id="googleLogin" class="google-btn">LANJUTKAN DENGAN GOOGLE</button><button id="localMode" class="auth-local">LANJUTKAN MODE LOKAL</button><div id="authWarning" class="auth-warning hidden">Supabase belum dikonfigurasi. Isi COURTOPS_CONFIG pada index.html setelah project Supabase siap.</div></div></section><div id="controlApp" class="hidden"><main class="app"><header class="top"><div class="brand"><div class="logo">N2</div><div><h1>COURTOPS NOVA</h1><p>Bracket 8/16/32 + Juara 3 · NOVA V1.2</p></div></div><div class="row"><div id="accountChip" class="account-chip hidden"><span id="accountName">Akun</span></div><button id="helpTop" class="icon">?</button></div></header><section id="home" class="screen active"></section><section id="events" class="screen"></section><section id="matches" class="screen"></section><section id="courts" class="screen"></section><section id="more" class="screen"></section></main><nav class="nav"><button class="active" data-screen="home"><b>⌂</b>Home</button><button data-screen="events"><b>◇</b>Events</button><button data-screen="matches"><b>●</b>Matches</button><button data-screen="courts"><b>▦</b>Courts</button><button data-screen="more"><b>•••</b>More</button></nav></div><div id="portalApp" class="hidden"></div><div id="displayApp" class="hidden"></div><div id="modal" class="modal hidden"><div class="modal-card"><div class="modal-head"><div><span id="modalEye" class="eyebrow">CourtOps</span><h2 id="modalTitle"></h2></div><button id="modalClose" class="close">✕</button></div><div id="modalBody"></div><div id="modalActions" class="modal-actions"></div></div></div><div id="toast" class="toast hidden"></div><script>
 "use strict";
 /* Runtime compatibility declarations, loaded before legacy relay overrides. */
 let v75RegisterLatestAssignment=async()=>{};
@@ -1352,5 +1357,61 @@ function co130Brand(){document.title='CourtOps Nova V1.3 · Custom KO Draw';cons
 const co130RenderBase=render;render=function(){co130RenderBase();co130Brand()};
 const co130ShowBase=showControl;showControl=function(){co130ShowBase();co130Brand()};
 window.addEventListener('pageshow',co130Brand);co130Brand();render();
+
+
+/* ===== COURTOPS NOVA V1.4 AUTO ADVANCE + LIVE BRACKET DISPLAY ===== */
+const CO140_BUILD='NOVA-1.4-AUTO-ADVANCE-LIVE-BRACKET-20260926';
+function co140ResolvedWinner(m){
+  if(!m||m.status!=='approved'||!m.a||!m.b)return null;
+  if(m.winner==='A')return m.a;if(m.winner==='B')return m.b;
+  if(Number(m.scoreA)===Number(m.scoreB))return null;
+  return Number(m.scoreA)>Number(m.scoreB)?m.a:m.b;
+}
+function co140ResolvedLoser(m){const w=co140ResolvedWinner(m);return !w?null:(w===m.a?m.b:m.a)}
+function co140AdvanceAll(){
+  let changed=false;
+  for(const e of S.events||[]){
+    const cfg=e.knockoutQualification;if(!cfg?.published||!cfg.stageId)continue;
+    const ms=S.matches.filter(m=>m.koStage===cfg.stageId);
+    const ordered=ms.filter(m=>m.sourceA||m.sourceB).sort((a,b)=>(a.koRound-b.koRound)||(a.koIndex-b.koIndex));
+    for(const m of ordered){
+      if(!['scheduled','reopened'].includes(m.status))continue;
+      const srcA=ms.find(x=>x.id===m.sourceA),srcB=ms.find(x=>x.id===m.sourceB);
+      const nextA=m.sourceTypeA==='loser'?co140ResolvedLoser(srcA):co140ResolvedWinner(srcA);
+      const nextB=m.sourceTypeB==='loser'?co140ResolvedLoser(srcB):co140ResolvedWinner(srcB);
+      if(m.a!==nextA){m.a=nextA;m.revision=Number(m.revision||0)+1;changed=true}
+      if(m.b!==nextB){m.b=nextB;m.revision=Number(m.revision||0)+1;changed=true}
+    }
+  }
+  return changed;
+}
+co83Advance=co140AdvanceAll;
+const co140SaveBase=save;
+save=function(){co140AdvanceAll();return co140SaveBase()};
+approve=function(m){
+  if(!m)return;
+  if(Number(m.scoreA)===Number(m.scoreB))return alert('Hasil knockout tidak boleh seri.');
+  if(!confirm('Sahkan hasil dan majukan pemenang ke babak berikutnya?'))return;
+  m.status='approved';m.winner=Number(m.scoreA)>Number(m.scoreB)?'A':'B';m.approvedAt=Date.now();m.revision=Number(m.revision||0)+1;
+  co140AdvanceAll();audit('RESULT_APPROVED_AUTO_ADVANCE',m.id);save();toast('Hasil resmi · pemenang otomatis maju');
+};
+const co140ManualBase=v70ManualResult;
+v70ManualResult=function(m){co140ManualBase(m);const btn=$('#v70SaveManual');if(!btn)return;const old=btn.onclick;btn.onclick=()=>{old?.update?old.update():old?.();setTimeout(()=>{co140AdvanceAll();localStorage.setItem(KEY,JSON.stringify(S));render();syncCloud()},0)}};
+function co140Status(m){if(m.status==='approved')return 'SELESAI';if(m.status==='live'||m.status==='paused')return 'LIVE';if(!m.a||!m.b)return 'MENUNGGU';return 'SIAP'}
+function co140RoundName(size){return size===2?'FINAL':size===4?'SEMIFINAL':size===8?'8 BESAR':size===16?'16 BESAR':size===32?'32 BESAR':`BABAK ${size}`}
+function co140Bracket(e){
+  co140AdvanceAll();const cfg=e.knockoutQualification;if(!cfg?.published)return '<div class="display-empty">Bracket knockout belum diterbitkan.</div>';
+  const all=S.matches.filter(m=>m.eventId===e.id&&m.koStage===cfg.stageId),main=all.filter(m=>!m.isBronze),roundCount=Math.log2(cfg.slots),rounds=Array.from({length:roundCount},(_,r)=>main.filter(m=>m.koRound===r).sort((a,b)=>a.koIndex-b.koIndex));
+  const roundHtml=rounds.map((list,r)=>{const size=cfg.slots/(2**r);return `<section class="co140-round"><h2>${co140RoundName(size)}</h2><div class="co140-round-body">${list.map((m,i)=>`<article class="co140-match ${m.status==='approved'?'done':''} ${['live','paused'].includes(m.status)?'live':''}"><header><span>MATCH ${i+1}</span><b>${co140Status(m)}</b></header><div class="co140-team ${co140ResolvedWinner(m)===m.a?'winner':''}"><span>${m.a?esc(nameOf(e.id,m.a)):'Menunggu pemenang'}</span><strong>${m.status==='approved'||['live','paused','submitted'].includes(m.status)?m.scoreA:'–'}</strong></div><div class="co140-team ${co140ResolvedWinner(m)===m.b?'winner':''}"><span>${m.b?esc(nameOf(e.id,m.b)):'Menunggu pemenang'}</span><strong>${m.status==='approved'||['live','paused','submitted'].includes(m.status)?m.scoreB:'–'}</strong></div></article>`).join('')}</div></section>`}).join('');
+  const bronze=all.find(m=>m.isBronze),bronzeHtml=bronze?`<section class="co140-bronze"><h2>PEREBUTAN JUARA 3</h2><div class="co140-team"><span>${bronze.a?esc(nameOf(e.id,bronze.a)):'Menunggu semifinal'}</span><strong>${bronze.status==='approved'?bronze.scoreA:'–'}</strong></div><div class="co140-team"><span>${bronze.b?esc(nameOf(e.id,bronze.b)):'Menunggu semifinal'}</span><strong>${bronze.status==='approved'?bronze.scoreB:'–'}</strong></div></section>`:'';
+  return `<div class="co140-stage"><div class="co140-bracket">${roundHtml}</div>${bronzeHtml}</div>`;
+}
+v72Knockout=co140Bracket;
+const co140DisplayBase=renderDisplay;
+renderDisplay=function(){co140AdvanceAll();co140DisplayBase();if(mode()!=='display')return;const e=S.events.find(x=>x.id===S.display?.eventId)||eventNow(),preset=S.display?.preset||S.display?.mode;if(!['knockout','live-knockout'].includes(preset))return;const current=$('#displayApp .display-bracket-grid');if(current)current.outerHTML=co140Bracket(e);else if(preset==='knockout'){const section=$('#displayApp section');if(section)section.innerHTML=`<h2>Knockout Bracket</h2>${co140Bracket(e)}`}}
+const co140RenderBase=render;
+render=function(){co140AdvanceAll();co140RenderBase();co140Brand()};
+function co140Brand(){document.title='CourtOps Nova V1.4 · Auto Advance';const p=document.querySelector('.brand p');if(p)p.textContent='Custom KO + Auto Advance + Live Bracket · NOVA V1.4';const logo=document.querySelector('.brand .logo');if(logo)logo.textContent='N4';document.documentElement.dataset.build=CO140_BUILD}
+co140Brand();render();
 
 </script></body></html>
