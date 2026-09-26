@@ -1461,23 +1461,43 @@ function co150Brand(){document.title='CourtOps Nova V1.5 · Responsive Display';
 const co150RenderBase=render;render=function(){co150RenderBase();co150Brand()};co150Brand();render();
 
 
-/* ===== COURTOPS NOVA V1.6 PUBLIC WATCH LINK ===== */
-const CO160_BUILD='NOVA-1.6-PUBLIC-WATCH-20260926';
-const CO160_PUBLIC_ROOM='courtops-public-main';
-function co160PublicClient(){return supabase.createClient(COURTOPS_CONFIG.url,COURTOPS_CONFIG.publishableKey,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}})}
-function co160PublicRoom(){return S.publicRoomId||CO160_PUBLIC_ROOM}
-function co160WatchUrl(){const u=new URL(location.origin+location.pathname);u.search='';u.searchParams.set('mode','display');u.searchParams.set('room',co160PublicRoom());return u}
-async function co160Publish(){if(!currentUser||!cloud)return;S.publicRoomId=co160PublicRoom();const {error}=await cloud.from('tournament_rooms').upsert({room_id:co160PublicRoom(),owner_id:currentUser.id,data:S,updated_at:new Date().toISOString()});if(error)console.error('Public display publish failed',error)}
-const co160SaveBase=save;save=function(){const out=co160SaveBase();if(mode()==='control'&&currentUser)co160Publish();return out};
-async function co160OpenPublic(){
-  setUserScope(null);KEY='courtops_nova10_public_display';CFG='courtops_nova10cfg_public_display';cloud=co160PublicClient();
-  const room=new URL(location.href).searchParams.get('room')||CO160_PUBLIC_ROOM;
-  const loadRoom=async()=>{const {data,error}=await cloud.from('tournament_rooms').select('data,updated_at').eq('room_id',room).maybeSingle();if(error)throw error;if(data?.data){S={...fresh(),...data.data};localStorage.setItem(KEY,JSON.stringify(S));renderDisplay()}else{document.querySelector('#displayApp').classList.remove('hidden');document.querySelector('#displayApp').innerHTML='<main class="display"><div class="display-empty">Public Display belum dipublikasikan oleh panitia.</div></main>'}};
-  try{await loadRoom();channel=cloud.channel('public-room:'+room).on('postgres_changes',{event:'*',schema:'public',table:'tournament_rooms',filter:'room_id=eq.'+room},p=>{if(p.new?.data){S={...fresh(),...p.new.data};localStorage.setItem(KEY,JSON.stringify(S));renderDisplay()}}).subscribe();clearInterval(window.co160Poll);window.co160Poll=setInterval(loadRoom,1200)}catch(err){console.error(err);document.querySelector('#displayApp').classList.remove('hidden');document.querySelector('#displayApp').innerHTML='<main class="display"><div class="display-empty">Public Display belum dapat dimuat. Periksa koneksi atau kebijakan akses publik Supabase.</div></main>'}
+/* ===== COURTOPS NOVA V1.7 ZERO-SETUP PUBLIC DISPLAY ===== */
+const CO170_BUILD='NOVA-1.7-ZERO-SETUP-PUBLIC-DISPLAY-20260926';
+const CO170_ROOM='courtops-public-display';
+let co170Channel=null,co170Timer=null,co170Client=null;
+function co170Url(){const u=new URL(location.origin+location.pathname);u.search='';u.hash='';u.searchParams.set('mode','display');u.searchParams.set('public','1');return u}
+function co170Anon(){return supabase.createClient(COURTOPS_CONFIG.url,COURTOPS_CONFIG.publishableKey,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}})}
+async function co170OpenChannel(receive=false){
+  if(co170Channel)return co170Channel;
+  co170Client=co170Anon();
+  co170Channel=co170Client.channel(CO170_ROOM,{config:{broadcast:{ack:false,self:false}}});
+  if(receive)co170Channel.on('broadcast',{event:'state'},({payload})=>{if(!payload?.data)return;S={...fresh(),...payload.data};localStorage.setItem('courtops_public_display_cache',JSON.stringify(S));renderDisplay()});
+  await new Promise(resolve=>{let done=false;co170Channel.subscribe(st=>{if(st==='SUBSCRIBED'&&!done){done=true;resolve()}if(['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(st)&&!done){done=true;resolve()}});setTimeout(()=>{if(!done){done=true;resolve()}},2500)});
+  return co170Channel;
 }
-const co160BootBase=boot;boot=async function(){if(mode()==='display')return co160OpenPublic();return co160BootBase()};
-const co160SettingsBase=displaySettings;displaySettings=function(){co160SettingsBase();const body=document.querySelector('#modalBody');if(!body||document.querySelector('#co160PublicLink'))return;const u=co160WatchUrl();body.insertAdjacentHTML('beforeend',`<div class="co83-note" style="margin-top:12px"><b>Link Public Display tanpa login</b><p id="co160PublicLink" style="word-break:break-all;margin:7px 0">${esc(u.href)}</p><button type="button" class="btn secondary" id="co160Copy">Salin Link Publik</button></div>`);document.querySelector('#co160Copy').onclick=async()=>{await co160Publish();try{await navigator.clipboard.writeText(u.href);toast('Link Public Display disalin')}catch{prompt('Salin link Public Display:',u.href)}};const openBtn=document.querySelector('#v72OpenDisplay');if(openBtn){openBtn.onclick=async()=>{let chosen=document.querySelector('.display-preset.selected')?.dataset.v72Preset||S.display?.preset||'live-knockout';S.display={...S.display,preset:chosen,mode:chosen,eventId:document.querySelector('#v72Event')?.value||eventNow()?.id,standingsMode:'grid'};save();await co160Publish();closeModal();open(co160WatchUrl().href,'courtops-nova-public-display')}}};
-function co160Brand(){document.documentElement.dataset.build=CO160_BUILD;if(mode()==='control'){document.title='CourtOps Nova V1.6 · Public Watch';const p=document.querySelector('.brand p');if(p)p.textContent='Public Watch tanpa login · NOVA V1.6';const l=document.querySelector('.brand .logo');if(l)l.textContent='N6'}}
-const co160RenderBase=render;render=function(){co160RenderBase();co160Brand()};co160Brand();
+async function co170Broadcast(){
+  if(mode()!=='control')return;
+  const ch=await co170OpenChannel(false);if(!ch)return;
+  await ch.send({type:'broadcast',event:'state',payload:{data:JSON.parse(JSON.stringify(S)),at:Date.now()}});
+}
+function co170StartPublishing(){clearInterval(co170Timer);co170Broadcast();co170Timer=setInterval(co170Broadcast,1000)}
+async function co170PublicBoot(){
+  setUserScope(null);KEY='courtops_public_display_cache';CFG='courtops_public_display_cfg';
+  try{S={...fresh(),...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{S=fresh()}
+  $('#authGate').classList.add('hidden');$('#controlApp').classList.add('hidden');$('#portalApp').classList.add('hidden');$('#displayApp').classList.remove('hidden');
+  if(S?.events?.length&&localStorage.getItem(KEY))renderDisplay();else $('#displayApp').innerHTML='<main class="display"><div class="display-empty">Menunggu siaran dari Main Control...</div></main>';
+  await co170OpenChannel(true);
+  await co170Channel?.send({type:'broadcast',event:'request',payload:{at:Date.now()}});
+}
+const co170BootBase=boot;
+boot=async function(){if(mode()==='display'&&new URL(location.href).searchParams.get('public')==='1')return co170PublicBoot();return co170BootBase()};
+const co170SaveBase=save;
+save=function(){const out=co170SaveBase();if(mode()==='control')co170Broadcast();return out};
+const co170InitBase=initCloud;
+initCloud=async function(){const out=await co170InitBase();if(mode()==='control'){const ch=await co170OpenChannel(false);ch?.on('broadcast',{event:'request'},()=>co170Broadcast());co170StartPublishing()}return out};
+const co170SettingsBase=displaySettings;
+displaySettings=function(){co170SettingsBase();const body=$('#modalBody');if(!body||$('#co170PublicLink'))return;const u=co170Url();body.insertAdjacentHTML('beforeend',`<div class="co83-note" style="margin-top:12px"><b>Public Display tanpa login dan tanpa pengaturan database</b><p id="co170PublicLink" style="word-break:break-all;margin:7px 0">${esc(u.href)}</p><button type="button" class="btn secondary" id="co170Copy">Salin Link Publik</button></div>`);$('#co170Copy').onclick=async()=>{co170StartPublishing();try{await navigator.clipboard.writeText(u.href);toast('Link publik disalin')}catch{prompt('Salin link publik:',u.href)}};const openBtn=$('#v72OpenDisplay');if(openBtn){openBtn.onclick=()=>{const selected=$('.display-preset.selected')?.dataset.v72Preset||S.display?.preset||'live-knockout';S.display={...S.display,preset:selected,mode:selected,eventId:$('#v72Event')?.value||eventNow()?.id,standingsMode:'grid'};save();co170StartPublishing();closeModal();open(u.href,'courtops-nova-public-display')}}};
+function co170Brand(){document.documentElement.dataset.build=CO170_BUILD;if(mode()==='control'){document.title='CourtOps Nova V1.7 · Public Display';const p=document.querySelector('.brand p');if(p)p.textContent='Public Display tanpa login · NOVA V1.7';const l=document.querySelector('.brand .logo');if(l)l.textContent='N7'}}
+const co170RenderBase=render;render=function(){co170RenderBase();co170Brand()};co170Brand();
 
 </script></body></html>
