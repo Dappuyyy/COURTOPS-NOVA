@@ -1460,4 +1460,24 @@ window.addEventListener('orientationchange',()=>setTimeout(()=>{co150FitDisplay(
 function co150Brand(){document.title='CourtOps Nova V1.5 · Responsive Display';document.documentElement.dataset.build=CO150_BUILD;const p=document.querySelector('.brand p');if(p)p.textContent='Responsive Venue Display + Portrait Umpire · NOVA V1.5';const logo=document.querySelector('.brand .logo');if(logo)logo.textContent='N5'}
 const co150RenderBase=render;render=function(){co150RenderBase();co150Brand()};co150Brand();render();
 
+
+/* ===== COURTOPS NOVA V1.6 PUBLIC WATCH LINK ===== */
+const CO160_BUILD='NOVA-1.6-PUBLIC-WATCH-20260926';
+const CO160_PUBLIC_ROOM='courtops-public-main';
+function co160PublicClient(){return supabase.createClient(COURTOPS_CONFIG.url,COURTOPS_CONFIG.publishableKey,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}})}
+function co160PublicRoom(){return S.publicRoomId||CO160_PUBLIC_ROOM}
+function co160WatchUrl(){const u=new URL(location.origin+location.pathname);u.search='';u.searchParams.set('mode','display');u.searchParams.set('room',co160PublicRoom());return u}
+async function co160Publish(){if(!currentUser||!cloud)return;S.publicRoomId=co160PublicRoom();const {error}=await cloud.from('tournament_rooms').upsert({room_id:co160PublicRoom(),owner_id:currentUser.id,data:S,updated_at:new Date().toISOString()});if(error)console.error('Public display publish failed',error)}
+const co160SaveBase=save;save=function(){const out=co160SaveBase();if(mode()==='control'&&currentUser)co160Publish();return out};
+async function co160OpenPublic(){
+  setUserScope(null);KEY='courtops_nova10_public_display';CFG='courtops_nova10cfg_public_display';cloud=co160PublicClient();
+  const room=new URL(location.href).searchParams.get('room')||CO160_PUBLIC_ROOM;
+  const loadRoom=async()=>{const {data,error}=await cloud.from('tournament_rooms').select('data,updated_at').eq('room_id',room).maybeSingle();if(error)throw error;if(data?.data){S={...fresh(),...data.data};localStorage.setItem(KEY,JSON.stringify(S));renderDisplay()}else{document.querySelector('#displayApp').classList.remove('hidden');document.querySelector('#displayApp').innerHTML='<main class="display"><div class="display-empty">Public Display belum dipublikasikan oleh panitia.</div></main>'}};
+  try{await loadRoom();channel=cloud.channel('public-room:'+room).on('postgres_changes',{event:'*',schema:'public',table:'tournament_rooms',filter:'room_id=eq.'+room},p=>{if(p.new?.data){S={...fresh(),...p.new.data};localStorage.setItem(KEY,JSON.stringify(S));renderDisplay()}}).subscribe();clearInterval(window.co160Poll);window.co160Poll=setInterval(loadRoom,1200)}catch(err){console.error(err);document.querySelector('#displayApp').classList.remove('hidden');document.querySelector('#displayApp').innerHTML='<main class="display"><div class="display-empty">Public Display belum dapat dimuat. Periksa koneksi atau kebijakan akses publik Supabase.</div></main>'}
+}
+const co160BootBase=boot;boot=async function(){if(mode()==='display')return co160OpenPublic();return co160BootBase()};
+const co160SettingsBase=displaySettings;displaySettings=function(){co160SettingsBase();const body=document.querySelector('#modalBody');if(!body||document.querySelector('#co160PublicLink'))return;const u=co160WatchUrl();body.insertAdjacentHTML('beforeend',`<div class="co83-note" style="margin-top:12px"><b>Link Public Display tanpa login</b><p id="co160PublicLink" style="word-break:break-all;margin:7px 0">${esc(u.href)}</p><button type="button" class="btn secondary" id="co160Copy">Salin Link Publik</button></div>`);document.querySelector('#co160Copy').onclick=async()=>{await co160Publish();try{await navigator.clipboard.writeText(u.href);toast('Link Public Display disalin')}catch{prompt('Salin link Public Display:',u.href)}};const openBtn=document.querySelector('#v72OpenDisplay');if(openBtn){openBtn.onclick=async()=>{let chosen=document.querySelector('.display-preset.selected')?.dataset.v72Preset||S.display?.preset||'live-knockout';S.display={...S.display,preset:chosen,mode:chosen,eventId:document.querySelector('#v72Event')?.value||eventNow()?.id,standingsMode:'grid'};save();await co160Publish();closeModal();open(co160WatchUrl().href,'courtops-nova-public-display')}}};
+function co160Brand(){document.documentElement.dataset.build=CO160_BUILD;if(mode()==='control'){document.title='CourtOps Nova V1.6 · Public Watch';const p=document.querySelector('.brand p');if(p)p.textContent='Public Watch tanpa login · NOVA V1.6';const l=document.querySelector('.brand .logo');if(l)l.textContent='N6'}}
+const co160RenderBase=render;render=function(){co160RenderBase();co160Brand()};co160Brand();
+
 </script></body></html>
