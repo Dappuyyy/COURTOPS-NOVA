@@ -77,6 +77,56 @@ body:has(#displayApp:not(.hidden)){overflow:hidden;background:#130d1a}
 @media(max-height:650px) and (orientation:portrait){#v72UmpireHost .uc-court-ends{display:none}#v72UmpireHost .uc-info div:nth-child(2){display:none}#v72UmpireHost .uc-info{grid-template-columns:1fr 1fr}#v72UmpireHost .uc-point-buttons button{min-height:50px}#v72UmpireHost .uc-tools button{min-height:32px}}
 </style>
 
+
+<style id="co180MobilePublicDisplay">
+/* NOVA V1.8 mobile-first public display */
+#displayApp,#displayApp *{min-width:0}
+#displayApp .display-shell{max-width:100vw}
+#displayApp .display-live-card b,#displayApp .display-side-card b,#displayApp .co140-team span,#displayApp .co84-card b{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;overflow-wrap:break-word!important;word-break:normal!important;hyphens:auto}
+@media(max-width:700px){
+ body:has(#displayApp:not(.hidden)){overflow:auto!important}
+ #displayApp:not(.hidden),#displayApp:not(.hidden) .display-shell{width:100%;height:auto!important;min-height:100dvh;overflow:visible!important}
+ #displayApp .display-shell{display:block;padding:calc(10px + env(safe-area-inset-top,0px)) 10px calc(48px + env(safe-area-inset-bottom,0px))}
+ #displayApp .display-title{position:sticky;z-index:5;top:0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;margin:-10px -10px 10px;padding:calc(10px + env(safe-area-inset-top,0px)) 10px 9px;background:#1b1024ee;backdrop-filter:blur(14px);border-bottom:1px solid #ffffff18}
+ #displayApp .display-title h1{font-size:clamp(1.12rem,6vw,1.5rem);line-height:1.08;margin:2px 0;overflow-wrap:anywhere}
+ #displayApp .display-title .eyebrow{font-size:.56rem}.display-title .sync-indicator{font-size:.56rem}
+ #displayApp .display-two{display:flex!important;flex-direction:column;height:auto!important;overflow:visible!important;gap:12px}
+ #displayApp .display-two>section,#displayApp .display-two>aside{overflow:visible!important}
+ #displayApp .display-two>section>h2{font-size:1rem;margin:0 0 7px}
+ #displayApp .display-live-list{display:grid!important;grid-template-columns:1fr!important;overflow:visible!important;gap:8px}
+ #displayApp .display-live-card{padding:11px;border-radius:16px}
+ #displayApp .display-live-card .row{align-items:flex-start}
+ #displayApp .display-live-card .scoreline{grid-template-columns:minmax(0,1fr) 30px 34px;gap:6px;align-items:center;padding:8px 0;border-top:1px solid #ffffff12;font-size:.86rem;line-height:1.25}
+ #displayApp .display-live-card .scoreline b{padding-right:4px}
+ #displayApp .display-live-card .g{font-size:1.25rem}#displayApp .display-live-card .p{font-size:1.08rem}
+ #displayApp .co140-stage{height:auto!important;overflow:visible!important}
+ #displayApp .co140-bracket{display:flex!important;height:auto!important;gap:12px;overflow-x:auto!important;overflow-y:visible!important;padding:2px 2px 12px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+ #displayApp .co140-round{flex:0 0 min(86vw,340px);width:min(86vw,340px);height:auto!important;scroll-snap-align:start}
+ #displayApp .co140-round h2{position:sticky;left:0;font-size:.7rem;margin:0 0 7px}
+ #displayApp .co140-round-body{display:grid!important;gap:9px!important}
+ #displayApp .co140-match{min-height:0!important;padding:8px;border-radius:14px}
+ #displayApp .co140-match:after{display:none}
+ #displayApp .co140-match header{font-size:.58rem;margin-bottom:4px}
+ #displayApp .co140-team{grid-template-columns:minmax(0,1fr) 26px;gap:7px;padding:9px 7px;font-size:.82rem;line-height:1.28}
+ #displayApp .co140-team strong{font-size:1rem}
+ #displayApp .co140-bronze{display:block;max-width:none;margin:10px 0;padding:10px}
+ #displayApp .co84-upcoming{display:block!important;max-height:none!important;overflow:visible!important;margin-top:12px;padding:10px}
+ #displayApp .co84-upcoming h2{font-size:.88rem}
+ #displayApp .co84-cards{display:grid;grid-template-columns:1fr!important;gap:7px}
+ #displayApp .co84-card{padding:9px;font-size:.78rem;line-height:1.3}
+ #displayApp .display-stand-grid{grid-template-columns:1fr!important;gap:8px}
+ #displayApp .display-side-card{padding:10px}.display-side-card .teamline{align-items:flex-start}
+ #displayApp .ticker{position:fixed;z-index:8;left:0;right:0;bottom:0;height:auto;min-height:38px;padding:7px 10px calc(7px + env(safe-area-inset-bottom,0px));font-size:.72rem;line-height:1.2}
+}
+@media(max-width:380px){
+ #displayApp .display-shell{padding-left:7px;padding-right:7px}
+ #displayApp .display-title{margin-left:-7px;margin-right:-7px;padding-left:7px;padding-right:7px}
+ #displayApp .co140-round{flex-basis:90vw;width:90vw}
+ #displayApp .co140-team{font-size:.76rem;padding:8px 6px}
+ #displayApp .display-live-card .scoreline{font-size:.8rem;grid-template-columns:minmax(0,1fr) 27px 31px}
+}
+</style>
+
 </head><body><section id="authGate" class="auth-gate hidden"><div class="auth-card"><span class="eyebrow">COURTOPS NOVA ACCOUNT · V1.2</span><h1>Plan. Officiate.<br>Display. Sync.</h1><p>Masuk agar data turnamen terpisah berdasarkan akun dan siap disinkronkan melalui Supabase.</p><button id="googleLogin" class="google-btn">LANJUTKAN DENGAN GOOGLE</button><button id="localMode" class="auth-local">LANJUTKAN MODE LOKAL</button><div id="authWarning" class="auth-warning hidden">Supabase belum dikonfigurasi. Isi COURTOPS_CONFIG pada index.html setelah project Supabase siap.</div></div></section><div id="controlApp" class="hidden"><main class="app"><header class="top"><div class="brand"><div class="logo">N2</div><div><h1>COURTOPS NOVA</h1><p>Bracket 8/16/32 + Juara 3 · NOVA V1.2</p></div></div><div class="row"><div id="accountChip" class="account-chip hidden"><span id="accountName">Akun</span></div><button id="helpTop" class="icon">?</button></div></header><section id="home" class="screen active"></section><section id="events" class="screen"></section><section id="matches" class="screen"></section><section id="courts" class="screen"></section><section id="more" class="screen"></section></main><nav class="nav"><button class="active" data-screen="home"><b>⌂</b>Home</button><button data-screen="events"><b>◇</b>Events</button><button data-screen="matches"><b>●</b>Matches</button><button data-screen="courts"><b>▦</b>Courts</button><button data-screen="more"><b>•••</b>More</button></nav></div><div id="portalApp" class="hidden"></div><div id="displayApp" class="hidden"></div><div id="modal" class="modal hidden"><div class="modal-card"><div class="modal-head"><div><span id="modalEye" class="eyebrow">CourtOps</span><h2 id="modalTitle"></h2></div><button id="modalClose" class="close">✕</button></div><div id="modalBody"></div><div id="modalActions" class="modal-actions"></div></div></div><div id="toast" class="toast hidden"></div><script>
 "use strict";
 /* Runtime compatibility declarations, loaded before legacy relay overrides. */
@@ -1499,5 +1549,21 @@ const co170SettingsBase=displaySettings;
 displaySettings=function(){co170SettingsBase();const body=$('#modalBody');if(!body||$('#co170PublicLink'))return;const u=co170Url();body.insertAdjacentHTML('beforeend',`<div class="co83-note" style="margin-top:12px"><b>Public Display tanpa login dan tanpa pengaturan database</b><p id="co170PublicLink" style="word-break:break-all;margin:7px 0">${esc(u.href)}</p><button type="button" class="btn secondary" id="co170Copy">Salin Link Publik</button></div>`);$('#co170Copy').onclick=async()=>{co170StartPublishing();try{await navigator.clipboard.writeText(u.href);toast('Link publik disalin')}catch{prompt('Salin link publik:',u.href)}};const openBtn=$('#v72OpenDisplay');if(openBtn){openBtn.onclick=()=>{const selected=$('.display-preset.selected')?.dataset.v72Preset||S.display?.preset||'live-knockout';S.display={...S.display,preset:selected,mode:selected,eventId:$('#v72Event')?.value||eventNow()?.id,standingsMode:'grid'};save();co170StartPublishing();closeModal();open(u.href,'courtops-nova-public-display')}}};
 function co170Brand(){document.documentElement.dataset.build=CO170_BUILD;if(mode()==='control'){document.title='CourtOps Nova V1.7 · Public Display';const p=document.querySelector('.brand p');if(p)p.textContent='Public Display tanpa login · NOVA V1.7';const l=document.querySelector('.brand .logo');if(l)l.textContent='N7'}}
 const co170RenderBase=render;render=function(){co170RenderBase();co170Brand()};co170Brand();
+
+
+/* ===== COURTOPS NOVA V1.8 FLEXIBLE MOBILE PUBLIC DISPLAY ===== */
+const CO180_BUILD='NOVA-1.8-MOBILE-PUBLIC-DISPLAY-20260926';
+function co180MobileDisplay(){
+ if(mode()!=='display')return;
+ const root=document.querySelector('#displayApp');if(!root)return;
+ root.classList.toggle('co180-phone',matchMedia('(max-width:700px)').matches);
+ const shell=root.querySelector('.display-shell');if(shell)shell.style.removeProperty('height');
+}
+const co180DisplayBase=renderDisplay;
+renderDisplay=function(){co180DisplayBase();requestAnimationFrame(co180MobileDisplay)};
+window.addEventListener('resize',()=>requestAnimationFrame(co180MobileDisplay),{passive:true});
+window.addEventListener('orientationchange',()=>setTimeout(co180MobileDisplay,120),{passive:true});
+function co180Brand(){document.documentElement.dataset.build=CO180_BUILD;if(mode()==='control'){document.title='CourtOps Nova V1.8 · Mobile Public Display';const p=document.querySelector('.brand p');if(p)p.textContent='Mobile-friendly Public Display · NOVA V1.8';const l=document.querySelector('.brand .logo');if(l)l.textContent='N8'}}
+const co180RenderBase=render;render=function(){co180RenderBase();co180Brand()};co180Brand();co180MobileDisplay();
 
 </script></body></html>
