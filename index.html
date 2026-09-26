@@ -1260,4 +1260,97 @@ const co120ShowBase=showControl;showControl=function(){co120ShowBase();co120Bran
  const oldRender=render;render=function(){oldRender();mount()};const oldShow=show;show=function(id){oldShow(id);mount()};window.addEventListener('pageshow',mount);mount();
 })();
 
+
+/* ===== COURTOPS NOVA V1.3 CUSTOM KO DRAW ===== */
+const CO130_BUILD='NOVA-1.3-CUSTOM-KO-DRAW-20260926';
+const co130ReadBase=co120ReadForm;
+co120ReadForm=function(cfg,manual){
+  const out=co130ReadBase(cfg,manual);
+  const mode=document.querySelector('#co130DrawMode')?.value||cfg.drawMode||'auto';
+  return {...out,drawMode:mode};
+};
+const co130QualificationBase=co120Qualification;
+co120Qualification=function(){
+  co130QualificationBase();
+  const cfg=co120Cfg(co120Event());
+  const form=document.querySelector('#modalBody .form');
+  if(form&&!document.querySelector('#co130DrawMode')){
+    const field=document.createElement('div');
+    field.className='field full';
+    field.innerHTML='<label>Susunan pertemuan ronde awal</label><select id="co130DrawMode"><option value="auto">Otomatis berdasarkan seed</option><option value="custom">Custom, tentukan siapa bertemu siapa</option></select><small>Mode custom memakai peserta yang lolos, lalu panitia memasangkan setiap slot secara manual.</small>';
+    form.appendChild(field);
+    document.querySelector('#co130DrawMode').value=cfg.drawMode||'auto';
+  }
+};
+function co130CreateMatches(e,c,participantIds,pairs){
+  const stage=uid('ko-stage'),rounds=Math.log2(c.slots);
+  const roundIds=Array.from({length:rounds},(_,r)=>Array.from({length:c.slots/(2**(r+1))},()=>uid('ko')));
+  const made=[];
+  for(let rd=0;rd<rounds;rd++){
+    const size=c.slots/(2**rd);
+    for(let i=0;i<roundIds[rd].length;i++){
+      const court=S.courts[made.length%Math.max(1,S.courts.length)];
+      made.push({id:roundIds[rd][i],eventId:e.id,stageId:stage,groupName:'Knockout',round:co120Label(size),koRound:rd,koIndex:i,koStage:stage,a:rd===0?pairs[i][0]:null,b:rd===0?pairs[i][1]:null,sourceA:rd?roundIds[rd-1][i*2]:null,sourceB:rd?roundIds[rd-1][i*2+1]:null,sourceTypeA:'winner',sourceTypeB:'winner',scoreA:0,scoreB:0,pointA:0,pointB:0,status:'scheduled',courtId:court?.id||null,courtName:court?.name||'Court belum dipilih',umpireId:null,umpireName:null,serve:{configured:false},events:[],revision:0});
+    }
+  }
+  if(c.bronzeMatch&&c.slots>=4){
+    const semis=roundIds[rounds-2],court=S.courts[made.length%Math.max(1,S.courts.length)];
+    made.push({id:uid('bronze'),eventId:e.id,stageId:stage,groupName:'Knockout',round:'Perebutan Juara 3',koRound:rounds-1,koIndex:1,koStage:stage,isBronze:true,a:null,b:null,sourceA:semis[0],sourceB:semis[1],sourceTypeA:'loser',sourceTypeB:'loser',scoreA:0,scoreB:0,pointA:0,pointB:0,status:'scheduled',courtId:court?.id||null,courtName:court?.name||'Court belum dipilih',umpireId:null,umpireName:null,serve:{configured:false},events:[],revision:0});
+  }
+  return{stage,made};
+}
+function co130CustomDraw(e,c,calc){
+  const participants=calc.selected.map(x=>({id:x.id,name:nameOf(e.id,x.id)}));
+  const optionHtml=participants.map(x=>`<option value="${esc(x.id)}">${esc(x.name)}</option>`).join('');
+  const defaultIds=participants.map(x=>x.id);
+  modal(`Custom Draw · ${esc(e.code)} · ${co120Label(c.slots)}`,`<div class="co83-note"><b>Tentukan siapa bertemu siapa.</b> Setiap peserta wajib dipakai tepat satu kali. Urutan Match 1 dan Match 2 akan bertemu di jalur berikutnya, begitu seterusnya.</div><div id="co130Pairs" class="co83-bracket" style="margin-top:12px">${Array.from({length:c.slots/2},(_,i)=>`<section class="slot"><small>${co120Label(c.slots)} · Match ${i+1}</small><label>Peserta A<select data-co130-pair="${i}" data-co130-side="0">${optionHtml}</select></label><div style="text-align:center;font-weight:950;margin:7px">VS</div><label>Peserta B<select data-co130-pair="${i}" data-co130-side="1">${optionHtml}</select></label></section>`).join('')}</div><p id="co130Error" class="co83-error"></p>`,`<button class="btn secondary" id="co130Back">Kembali</button><button class="btn primary" id="co130Confirm">Terbitkan Custom Bracket</button>`);
+  const selects=[...document.querySelectorAll('[data-co130-pair]')];
+  selects.forEach((sel,index)=>sel.value=defaultIds[index]);
+  const validate=()=>{
+    const ids=selects.map(x=>x.value),dupes=ids.filter((id,i)=>ids.indexOf(id)!==i);
+    const err=document.querySelector('#co130Error');
+    if(new Set(ids).size!==c.slots){err.textContent='Setiap peserta harus dipilih tepat satu kali. Masih ada peserta ganda atau belum dimasukkan.';return false}
+    err.textContent='';return true;
+  };
+  selects.forEach(s=>s.onchange=validate);
+  document.querySelector('#co130Back').onclick=co120Qualification;
+  document.querySelector('#co130Confirm').onclick=()=>{
+    if(!validate())return;
+    const pairs=Array.from({length:c.slots/2},(_,i)=>[
+      document.querySelector(`[data-co130-pair="${i}"][data-co130-side="0"]`).value,
+      document.querySelector(`[data-co130-pair="${i}"][data-co130-side="1"]`).value
+    ]);
+    if(!confirm(`Terbitkan ${co120Label(c.slots)} dengan susunan custom ini?`))return;
+    const built=co130CreateMatches(e,c,defaultIds,pairs);
+    if(co12Commit('KO_CUSTOM_PUBLISHED',()=>{S.matches.push(...built.made);e.knockoutQualification={...c,drawMode:'custom',published:true,stageId:built.stage,qualifiedIds:defaultIds,customPairs:pairs,publishedAt:Date.now()}})){
+      closeModal();render();show('matches');toast('Custom bracket diterbitkan');
+    }
+  };
+  validate();
+}
+const co130PublishAuto=co120Publish;
+co120Publish=function(e,c){
+  const calc=co120Calc(e,c);
+  if(!calc.ready)return alert(calc.issues.join('\n'));
+  if(e.knockoutQualification?.published)return co120BracketEditor(e);
+  if((c.drawMode||'auto')==='custom')return co130CustomDraw(e,c,calc);
+  return co130PublishAuto(e,c);
+};
+co120Swap=function(e,matchId,side,newId){
+  const cfg=e.knockoutQualification,first=S.matches.filter(x=>x.koStage===cfg?.stageId&&x.koRound===0&&x.status==='scheduled');
+  const target=first.find(x=>x.id===matchId);if(!target)return alert('Ronde awal sudah berjalan atau tidak tersedia.');
+  const otherSide=side==='a'?'b':'a';if(newId===target[otherSide])return alert('Peserta A dan B tidak boleh sama.');
+  const occupied=first.find(m=>m.id!==matchId&&(m.a===newId||m.b===newId));
+  const oldId=target[side];
+  if(co12Commit('KO_CUSTOM_PAIR_EDITED',()=>{
+    if(occupied){if(occupied.a===newId)occupied.a=oldId;else occupied.b=oldId;occupied.revision=Number(occupied.revision||0)+1}
+    target[side]=newId;target.revision=Number(target.revision||0)+1;
+    cfg.drawMode='custom';cfg.customPairs=first.map(m=>[m.a,m.b]);
+  })){closeModal();co120BracketEditor(e);toast(occupied?'Posisi peserta ditukar':'Pertemuan diperbarui')}
+};
+function co130Brand(){document.title='CourtOps Nova V1.3 · Custom KO Draw';const p=document.querySelector('.brand p');if(p)p.textContent='Custom KO Draw 2/4/8/16/32 + Juara 3 · NOVA V1.3';const logo=document.querySelector('.brand .logo');if(logo)logo.textContent='N3';document.documentElement.dataset.build=CO130_BUILD}
+const co130RenderBase=render;render=function(){co130RenderBase();co130Brand()};
+const co130ShowBase=showControl;showControl=function(){co130ShowBase();co130Brand()};
+window.addEventListener('pageshow',co130Brand);co130Brand();render();
+
 </script></body></html>
