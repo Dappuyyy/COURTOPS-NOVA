@@ -358,7 +358,85 @@ const v69OldScoreModal=scoreModal;scoreModal=function(m,preview){v69OldScoreModa
 // QR lebih besar dan payload lebih ringkas tanpa mengubah portal
 assignmentEnvelope=function(m,a){let e=S.events.find(x=>x.id===m.eventId),ea=entry(m.eventId,m.a),eb=entry(m.eventId,m.b);return{v:2,t:S.name,venue:S.venue,event:{id:e.id,code:e.code,name:e.name,type:e.type,rules:v69EnsureRules(e)},match:{id:m.id,eventId:m.eventId,groupName:m.groupName,round:m.round,a:m.a,b:m.b,scoreA:m.scoreA,scoreB:m.scoreB,pointA:m.pointA,pointB:m.pointB,status:m.status,courtId:m.courtId,courtName:m.courtName,umpireName:m.umpireName,serve:m.serve,events:[]},a:{id:ea.id,display:ea.display,members:ea.members},b:{id:eb.id,display:eb.display,members:eb.members},assignment:{id:a.id,matchId:a.matchId,umpireName:a.umpireName,code:a.code,token:a.token,expires:a.expires,status:a.status}}};
 const v69OldQrModal=qrModal;qrModal=function(m){v69OldQrModal(m);setTimeout(()=>{let box=$('#qrBox');if(!box)return;box.classList.add('v69-qr');box.closest('.modal-card')?.classList.add('v69-qr-modal');let raw=[...box.closest('.modal-card').querySelectorAll('p.meta')].find(x=>x.textContent.includes('?mode=umpire'));if(raw){raw.dataset.link=raw.textContent;raw.textContent='Link assignment siap dibagikan';raw.style.textAlign='center'}let actions=document.createElement('div');actions.className='v69-qr-actions';actions.innerHTML='<button class="btn secondary" data-v69-qr-full>Perbesar QR</button><button class="btn secondary" data-v69-qr-download>Unduh PNG</button><button class="btn secondary" id="v69Tips">Tips Scan</button>';box.after(actions);$('#v69Tips').onclick=()=>alert('Naikkan brightness layar, arahkan kamera lurus, dan pastikan seluruh area putih QR terlihat.');let link=raw?.dataset.link;box.innerHTML='';if(link)new QRCode(box,{text:link,width:560,height:560,colorDark:'#111111',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.L})},80)};
-function v69FullQR(){let c=$('#qrBox canvas'),img=$('#qrBox img');if(!c&&!img)return;let src=c?c.toDataURL('image/png'):img.src,w=open('','courtops-nova-qr-full');w.document.write(`<body style="margin:0;display:grid;place-items:center;background:#fff;min-height:100vh"><img src="${src}" style="width:min(92vw,820px);height:min(92vw,820px);image-rendering:pixelated"></body>`);w.document.close()}
+function v69FullQR(){let c=$('#qrBox canvas'),img=$('#qrBox img');if(!c&&!img)return;let src=c?c.toDataURL('image/png'):img.src,w=open('','courtops-nova-qr-full');w.document.write(`<body style="margin:0;display:grid;place-items:center;background:#fff;min-height:100vh"><img src="${src}" style="width:min(92vw,820px);height:min(92vw,820px);image-rendering:pixelated">
+<style id="co192PublicDisplayRedesign">
+/* ===== NOVA V1.9.2 SMART TV LIVE + KNOCKOUT REDESIGN ===== */
+body:has(#displayApp:not(.hidden)){background:#0d0812}
+#displayApp .display-shell{background:radial-gradient(circle at 18% -10%,#56315f55,transparent 34%),linear-gradient(145deg,#170d20 0%,#0c0811 100%);padding:clamp(14px,1.4vw,26px) clamp(16px,1.8vw,34px) calc(clamp(40px,5vh,58px) + env(safe-area-inset-bottom,0px));gap:clamp(10px,1.3vh,18px)}
+#displayApp .display-title{align-items:center;padding-bottom:clamp(9px,1.2vh,16px);border-bottom:1px solid #ffffff1c}
+#displayApp .display-title h1{font-size:clamp(1.8rem,3.2vw,3.65rem);letter-spacing:-.035em;line-height:.95}
+#displayApp .display-title .eyebrow{color:#ffca65;font-size:clamp(.65rem,.82vw,.9rem)}
+#displayApp .co192-head-actions{display:flex;align-items:center;gap:10px}
+#displayApp .co192-time{text-align:right}#displayApp .co192-time b{font-size:clamp(1rem,1.4vw,1.45rem)}
+#displayApp .co192-live-zone{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;min-height:0}
+#displayApp .co192-section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0}
+#displayApp .co192-section-head h2{margin:0;font-size:clamp(1rem,1.45vw,1.45rem)}
+#displayApp .co192-live-count{padding:7px 11px;border-radius:999px;background:#ff5b4d;color:#fff;font-size:clamp(.6rem,.75vw,.78rem);font-weight:950;letter-spacing:.08em;box-shadow:0 0 28px #ff5b4d55}
+#displayApp .co192-live-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:clamp(9px,1vw,16px)}
+#displayApp .co192-live-hero{position:relative;overflow:hidden;padding:clamp(14px,1.5vw,24px);border:1px solid #ffca6570;border-radius:22px;background:linear-gradient(135deg,#41223e 0%,#2a1834 52%,#152a2b 100%);box-shadow:0 14px 44px #0005,0 0 0 1px #ffffff09}
+#displayApp .co192-live-hero:before{content:"";position:absolute;inset:0 auto 0 0;width:7px;background:#ff5b4d;box-shadow:0 0 22px #ff5b4d}
+#displayApp .co192-live-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;color:#eacef0;font-size:clamp(.68rem,.85vw,.9rem);font-weight:900}
+#displayApp .co192-live-badge{display:inline-flex;align-items:center;gap:7px;color:#fff}.co192-live-badge:before{content:"";width:9px;height:9px;border-radius:50%;background:#ff5b4d;box-shadow:0 0 0 5px #ff5b4d22;animation:co192pulse 1.4s infinite}
+#displayApp .co192-score-row{display:grid;grid-template-columns:minmax(0,1fr) clamp(54px,5vw,88px) clamp(54px,5vw,84px);gap:10px;align-items:center;min-height:clamp(58px,7.4vh,88px);border-top:1px solid #ffffff15}
+#displayApp .co192-team{font-size:clamp(1rem,1.45vw,1.65rem);font-weight:950;line-height:1.1;overflow-wrap:anywhere}
+#displayApp .co192-team.serving:before{content:"●";color:#7ce4cf;margin-right:8px}
+#displayApp .co192-games{font-size:clamp(2rem,3.3vw,4rem);font-weight:1000;text-align:center}
+#displayApp .co192-points{display:grid;place-items:center;min-height:50px;border-radius:13px;background:#ffca6517;color:#ffca65;font-size:clamp(1.35rem,2.35vw,2.8rem);font-weight:1000}
+#displayApp .co192-no-live{padding:14px 18px;border:1px solid #79c8b744;border-radius:16px;background:#79c8b70d;color:#d8f7ef;font-weight:850}
+#displayApp .co192-bracket-panel{min-height:0;overflow:hidden;padding:clamp(10px,1vw,16px);border:1px solid #ffffff1c;border-radius:22px;background:#ffffff08}
+#displayApp .co192-bracket-panel>.co192-section-head{margin-bottom:8px}
+#displayApp .co192-bracket-panel .co140-stage{height:100%}
+#displayApp .co192-bracket-panel .co140-bracket{gap:clamp(14px,1.6vw,30px)}
+#displayApp .co192-bracket-panel .co140-round h2{padding-bottom:6px;border-bottom:2px solid #ffca654c;color:#ffca65;font-size:clamp(.66rem,.88vw,.9rem)}
+#displayApp .co192-bracket-panel .co140-match{border-color:#ffffff26;background:#ffffff0b}
+#displayApp .co192-bracket-panel .co140-match.live{border-color:#ff5b4d;box-shadow:0 0 22px #ff5b4d2d;animation:none}
+#displayApp .co192-bracket-panel .co140-match.live header b{color:#ff7f72}
+#displayApp .co192-upcoming-strip{padding:10px 12px;border:1px solid #ffffff18;border-radius:17px;background:#ffffff08;overflow:hidden}
+#displayApp .co192-upcoming-strip h2{margin:0 0 7px;color:#ffd4c9;font-size:clamp(.72rem,1vw,.98rem)}
+#displayApp .co192-upcoming-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:7px}
+#displayApp .co192-upcoming-card{min-width:0;padding:8px 10px;border-left:4px solid #ffca65;border-radius:10px;background:#ffffff0b;font-size:clamp(.62rem,.8vw,.82rem);line-height:1.18}
+#displayApp .co192-upcoming-card small{display:block;color:#cfc3d5}.co192-upcoming-card b{display:block;overflow-wrap:anywhere}.co192-upcoming-card em{color:#ffca65;font-style:normal;font-weight:950}
+#displayApp .ticker{background:linear-gradient(90deg,#ef6f61,#df5c55);font-size:clamp(.72rem,1vw,1rem);letter-spacing:.01em}
+@keyframes co192pulse{50%{opacity:.45;transform:scale(.78)}}
+@media(min-width:960px) and (orientation:landscape){
+ #displayApp .co192-layout{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:clamp(9px,1.1vh,15px);min-height:0;height:100%}
+ #displayApp .co192-live-grid[data-count="1"]{grid-template-columns:minmax(520px,900px)}
+ #displayApp .co192-live-grid[data-count="2"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #displayApp .co192-bracket-panel{height:100%}
+ #displayApp .co192-bracket-panel .co140-team{font-size:clamp(.72rem,.9vw,1rem)}
+}
+@media(max-width:700px){
+ #displayApp .display-shell{display:block!important;padding:12px 10px 52px!important;height:auto!important;overflow:visible!important}
+ #displayApp .display-title{position:sticky;top:0;z-index:8;margin:-12px -10px 12px;padding:12px 10px 9px;background:#160d1fee;backdrop-filter:blur(14px)}
+ #displayApp .display-title h1{font-size:1.35rem}
+ #displayApp .co192-head-actions .sync-indicator{display:none}
+ #displayApp .co192-live-grid{grid-template-columns:1fr}
+ #displayApp .co192-live-hero{padding:12px;border-radius:17px}
+ #displayApp .co192-score-row{grid-template-columns:minmax(0,1fr) 44px 48px;min-height:61px}
+ #displayApp .co192-team{font-size:.9rem}.co192-games{font-size:1.75rem!important}.co192-points{font-size:1.3rem!important;min-height:40px!important}
+ #displayApp .co192-bracket-panel{margin-top:12px;overflow:visible}
+ #displayApp .co192-bracket-panel .co140-bracket{display:flex!important;overflow-x:auto!important;padding-bottom:10px}
+ #displayApp .co192-bracket-panel .co140-round{flex:0 0 min(88vw,345px)}
+ #displayApp .co192-upcoming-strip{margin-top:12px}.co192-upcoming-list{grid-template-columns:1fr!important}
+}
+</style>
+<script id="co192PublicDisplayRedesignScript">
+/* Final public display renderer. Knockout-only stays bracket-only. Live+Knockout clearly prioritizes ongoing matches. */
+const CO192_BUILD='NOVA-1.9.2-TV-LIVE-KO-REDESIGN-20260927';
+function co192Event(){return S.events.find(x=>x.id===S.display?.eventId)||eventNow()}
+function co192LiveMatches(e){return (S.matches||[]).filter(m=>m.eventId===e.id&&['live','paused'].includes(m.status)&&m.a&&m.b).sort((a,b)=>String(a.courtName||'').localeCompare(String(b.courtName||''),'id',{numeric:true}))}
+function co192Point(m,side){return m.tieBreak?.active?(side==='A'?m.tieBreak.a:m.tieBreak.b):ptxt(m.pointA,m.pointB,side)}
+function co192LiveHtml(e){const live=co192LiveMatches(e);if(!live.length)return '<div class="co192-no-live">Belum ada pertandingan yang sedang berlangsung. Bracket tetap diperbarui otomatis saat match dimulai.</div>';return `<div class="co192-live-grid" data-count="${live.length}">${live.map(m=>{let serv=m.serve?.configured?role(m):null;return `<article class="co192-live-hero"><div class="co192-live-meta"><span class="co192-live-badge">SEDANG BERLANGSUNG</span><span>${esc(m.courtName||'COURT')} · ${esc(m.round||'KNOCKOUT')}</span></div><div class="co192-score-row"><div class="co192-team ${serv?.serving==='A'?'serving':''}">${esc(nameOf(m.eventId,m.a))}</div><div class="co192-games">${m.scoreA}</div><div class="co192-points">${co192Point(m,'A')}</div></div><div class="co192-score-row"><div class="co192-team ${serv?.serving==='B'?'serving':''}">${esc(nameOf(m.eventId,m.b))}</div><div class="co192-games">${m.scoreB}</div><div class="co192-points">${co192Point(m,'B')}</div></div></article>`}).join('')}</div>`}
+function co192Upcoming(e){const seen=new Set(),liveIds=new Set(co192LiveMatches(e).map(m=>m.id));const list=co84Next(e.id).filter(m=>{const key=[m.a,m.b].sort().join('|');if(liveIds.has(m.id)||seen.has(key))return false;seen.add(key);return true}).slice(0,4);if(!list.length)return '';return `<section class="co192-upcoming-strip"><h2>BERIKUTNYA</h2><div class="co192-upcoming-list">${list.map((m,i)=>`<div class="co192-upcoming-card"><small>${i+1}. ${esc(m.courtName||'Lapangan menyusul')} · ${esc(m.round||'Match')}</small><b>${esc(nameOf(m.eventId,m.a))} <em>VS</em> ${esc(nameOf(m.eventId,m.b))}</b></div>`).join('')}</div></section>`}
+function co192Header(e,preset){return `<header class="display-title"><div><span class="eyebrow">${preset==='knockout'?'KNOCKOUT BRACKET':'LIVE KNOCKOUT'}</span><h1>${esc(S.name)}</h1><p>${esc(e.code+' · '+e.name)}</p></div><div class="co192-head-actions"><div class="co192-time"><b id="clock"></b><div class="sync-indicator">REALTIME</div></div><button id="co190Fullscreen" class="co190-tv-button">FULLSCREEN</button></div></header>`}
+function co192Bind(){const clock=$('#clock');if(clock)clock.textContent=new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});const fs=$('#co190Fullscreen');if(fs)fs.onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch{toast('Gunakan menu fullscreen browser/TV')}};requestAnimationFrame(()=>{co150FitDisplay();co180MobileDisplay();co190EnhanceDisplay()})}
+const co192RenderBase=renderDisplay;
+renderDisplay=function(){const preset=S.display?.preset||S.display?.mode||'live-knockout';if(mode()!=='display'||!['knockout','live-knockout'].includes(preset))return co192RenderBase();$('#controlApp').classList.add('hidden');$('#displayApp').classList.remove('hidden');const e=co192Event();co140AdvanceAll();const bracket=co140Bracket(e),live=co192LiveMatches(e),liveSection=preset==='live-knockout'?`<section class="co192-live-zone"><div class="co192-section-head"><h2>PERTANDINGAN AKTIF</h2><span class="co192-live-count">${live.length} LIVE</span></div>${co192LiveHtml(e)}</section>`:'';const title=preset==='knockout'?'BRACKET KNOCKOUT':'BRACKET & PROGRES';$('#displayApp').innerHTML=`<main class="display-shell">${co192Header(e,preset)}<div class="co192-layout">${liveSection}<section class="co192-bracket-panel"><div class="co192-section-head"><h2>${title}</h2><span class="meta" style="color:#cfc3d5">Pemenang otomatis maju</span></div>${bracket}</section>${co192Upcoming(e)}</div><div class="ticker">${esc(S.announcements.find(x=>x.active)?.text||'Selamat datang')}</div></main>`;co192Bind()};
+function co192Brand(){document.documentElement.dataset.build=CO192_BUILD;if(mode()==='control'){document.title='CourtOps Nova V1.9.2 · TV Live Knockout';const p=document.querySelector('.brand p');if(p)p.textContent='TV Live Match + Knockout Focus · NOVA V1.9.2';const l=document.querySelector('.brand .logo');if(l)l.textContent='N9.2'}}
+const co192RenderControl=render;render=function(){co192RenderControl();co192Brand()};co192Brand();if(mode()==='display')renderDisplay();else render();
+</script>
+
+</body>`);w.document.close()}
 function v69DownloadQR(){let c=$('#qrBox canvas'),img=$('#qrBox img'),href=c?c.toDataURL('image/png'):img?.src;if(!href)return;let a=document.createElement('a');a.href=href;a.download='courtops-nova-qr-wasit.png';a.click()}
 const v69OldDisplaySettings=displaySettings;displaySettings=function(){v69OldDisplaySettings();let sel=$('#dMode');if(sel&&!Array.from(sel.options).some(o=>o.value==='overview'))sel.insertAdjacentHTML('afterbegin','<option value="overview">Ringkasan Venue · Live + Klasemen + Bracket</option>')};
 const v69OldRenderDisplay=renderDisplay;renderDisplay=function(){if(S.display?.mode!=='overview')return v69OldRenderDisplay();$('#controlApp').classList.add('hidden');$('#displayApp').classList.remove('hidden');let e=S.events.find(x=>x.id===S.display.eventId)||eventNow(),live=S.matches.filter(m=>['live','paused'].includes(m.status));let liveHtml=S.courts.map(c=>{let m=live.find(x=>x.courtId===c.id);if(!m)return`<div class="venue-score"><b>${esc(c.name)}</b><div class="meta" style="color:#d8cddb">AVAILABLE</div></div>`;let serv=m.serve?.configured?role(m):null;return`<div class="venue-score"><div class="row"><b>${esc(c.name)} · ${esc(S.events.find(x=>x.id===m.eventId)?.code||'EVENT')}</b><span class="pill live">LIVE</span></div><div class="venue-line"><b>${serv?.serving==='A'?'● ':''}${esc(nameOf(m.eventId,m.a))}</b><span class="venue-game">${m.scoreA}</span><span class="venue-point">${m.tieBreak?.active?m.tieBreak.a:ptxt(m.pointA,m.pointB,'A')}</span></div><div class="venue-line"><b>${serv?.serving==='B'?'● ':''}${esc(nameOf(m.eventId,m.b))}</b><span class="venue-game">${m.scoreB}</span><span class="venue-point">${m.tieBreak?.active?m.tieBreak.b:ptxt(m.pointA,m.pointB,'B')}</span></div><div class="meta" style="color:#d8cddb">${serv?'Server: '+esc(serv.server)+' · '+serv.side:'Menunggu setup servis'}</div></div>`}).join('');let g=e.groups?.[0],rows=g?standingsFor(e,g):[],stand=`<h2>Klasemen ${esc(g?.name||'Grup')}</h2>${rows.length?`<table class="venue-table"><thead><tr><th>RK</th><th>Nama</th><th>P</th><th>W</th><th>PTS</th></tr></thead><tbody>${rows.slice(0,6).map((r,i)=>`<tr><td>${i+1}</td><td>${esc(nameOf(e.id,r.id))}</td><td>${r.p}</td><td>${r.w}</td><td>${r.pts}</td></tr>`).join('')}</tbody></table>`:'<div class="meta" style="color:#d8cddb">Menunggu hasil resmi</div>'}`;let bracket='<h2>Knockout</h2><div class="venue-bracket"><div class="slot"><b>A1 vs B2</b><small>Semifinal 1</small></div><div class="slot"><b>B1 vs A2</b><small>Semifinal 2</small></div><div class="slot"><b>Winner SF1 vs Winner SF2</b><small>Final</small></div></div>';$('#displayApp').innerHTML=`<main class="display"><header class="displayhead"><div><span class="eyebrow">RINGKASAN VENUE</span><h1>${esc(S.name)}</h1><p>${esc(e.code+' · '+e.name)}</p></div><div style="text-align:right"><b id="clock"></b><div class="meta" style="color:#9fe1d2">● REALTIME</div></div></header><div class="venue-overview"><section class="venue-panel"><h2>Live Courts</h2><div class="venue-live-grid">${liveHtml}</div></section><aside class="venue-side"><section class="venue-panel">${stand}</section><section class="venue-panel">${bracket}</section></aside></div><div class="ticker">${esc(S.announcements.find(x=>x.active)?.text||'Selamat datang')}</div></main>`;setInterval(()=>{let x=$('#clock');if(x)x.textContent=new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})},1000)};
@@ -1668,4 +1746,82 @@ displaySettings=function(){
 };
 function co191Brand(){document.documentElement.dataset.build=CO191_BUILD;if(mode()==='control'){document.title='CourtOps Nova V1.9.1 · Flexible Display';const p=document.querySelector('.brand p');if(p)p.textContent='Flexible Fixtures + Smart TV Public Display · NOVA V1.9.1';const l=document.querySelector('.brand .logo');if(l)l.textContent='N9.1'}}
 const co191RenderBase=render;render=function(){co191RenderBase();co191Brand()};co191Brand();render();
-</script></body></html>
+</script>
+<style id="co192PublicDisplayRedesign">
+/* ===== NOVA V1.9.2 SMART TV LIVE + KNOCKOUT REDESIGN ===== */
+body:has(#displayApp:not(.hidden)){background:#0d0812}
+#displayApp .display-shell{background:radial-gradient(circle at 18% -10%,#56315f55,transparent 34%),linear-gradient(145deg,#170d20 0%,#0c0811 100%);padding:clamp(14px,1.4vw,26px) clamp(16px,1.8vw,34px) calc(clamp(40px,5vh,58px) + env(safe-area-inset-bottom,0px));gap:clamp(10px,1.3vh,18px)}
+#displayApp .display-title{align-items:center;padding-bottom:clamp(9px,1.2vh,16px);border-bottom:1px solid #ffffff1c}
+#displayApp .display-title h1{font-size:clamp(1.8rem,3.2vw,3.65rem);letter-spacing:-.035em;line-height:.95}
+#displayApp .display-title .eyebrow{color:#ffca65;font-size:clamp(.65rem,.82vw,.9rem)}
+#displayApp .co192-head-actions{display:flex;align-items:center;gap:10px}
+#displayApp .co192-time{text-align:right}#displayApp .co192-time b{font-size:clamp(1rem,1.4vw,1.45rem)}
+#displayApp .co192-live-zone{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;min-height:0}
+#displayApp .co192-section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0}
+#displayApp .co192-section-head h2{margin:0;font-size:clamp(1rem,1.45vw,1.45rem)}
+#displayApp .co192-live-count{padding:7px 11px;border-radius:999px;background:#ff5b4d;color:#fff;font-size:clamp(.6rem,.75vw,.78rem);font-weight:950;letter-spacing:.08em;box-shadow:0 0 28px #ff5b4d55}
+#displayApp .co192-live-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:clamp(9px,1vw,16px)}
+#displayApp .co192-live-hero{position:relative;overflow:hidden;padding:clamp(14px,1.5vw,24px);border:1px solid #ffca6570;border-radius:22px;background:linear-gradient(135deg,#41223e 0%,#2a1834 52%,#152a2b 100%);box-shadow:0 14px 44px #0005,0 0 0 1px #ffffff09}
+#displayApp .co192-live-hero:before{content:"";position:absolute;inset:0 auto 0 0;width:7px;background:#ff5b4d;box-shadow:0 0 22px #ff5b4d}
+#displayApp .co192-live-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;color:#eacef0;font-size:clamp(.68rem,.85vw,.9rem);font-weight:900}
+#displayApp .co192-live-badge{display:inline-flex;align-items:center;gap:7px;color:#fff}.co192-live-badge:before{content:"";width:9px;height:9px;border-radius:50%;background:#ff5b4d;box-shadow:0 0 0 5px #ff5b4d22;animation:co192pulse 1.4s infinite}
+#displayApp .co192-score-row{display:grid;grid-template-columns:minmax(0,1fr) clamp(54px,5vw,88px) clamp(54px,5vw,84px);gap:10px;align-items:center;min-height:clamp(58px,7.4vh,88px);border-top:1px solid #ffffff15}
+#displayApp .co192-team{font-size:clamp(1rem,1.45vw,1.65rem);font-weight:950;line-height:1.1;overflow-wrap:anywhere}
+#displayApp .co192-team.serving:before{content:"●";color:#7ce4cf;margin-right:8px}
+#displayApp .co192-games{font-size:clamp(2rem,3.3vw,4rem);font-weight:1000;text-align:center}
+#displayApp .co192-points{display:grid;place-items:center;min-height:50px;border-radius:13px;background:#ffca6517;color:#ffca65;font-size:clamp(1.35rem,2.35vw,2.8rem);font-weight:1000}
+#displayApp .co192-no-live{padding:14px 18px;border:1px solid #79c8b744;border-radius:16px;background:#79c8b70d;color:#d8f7ef;font-weight:850}
+#displayApp .co192-bracket-panel{min-height:0;overflow:hidden;padding:clamp(10px,1vw,16px);border:1px solid #ffffff1c;border-radius:22px;background:#ffffff08}
+#displayApp .co192-bracket-panel>.co192-section-head{margin-bottom:8px}
+#displayApp .co192-bracket-panel .co140-stage{height:100%}
+#displayApp .co192-bracket-panel .co140-bracket{gap:clamp(14px,1.6vw,30px)}
+#displayApp .co192-bracket-panel .co140-round h2{padding-bottom:6px;border-bottom:2px solid #ffca654c;color:#ffca65;font-size:clamp(.66rem,.88vw,.9rem)}
+#displayApp .co192-bracket-panel .co140-match{border-color:#ffffff26;background:#ffffff0b}
+#displayApp .co192-bracket-panel .co140-match.live{border-color:#ff5b4d;box-shadow:0 0 22px #ff5b4d2d;animation:none}
+#displayApp .co192-bracket-panel .co140-match.live header b{color:#ff7f72}
+#displayApp .co192-upcoming-strip{padding:10px 12px;border:1px solid #ffffff18;border-radius:17px;background:#ffffff08;overflow:hidden}
+#displayApp .co192-upcoming-strip h2{margin:0 0 7px;color:#ffd4c9;font-size:clamp(.72rem,1vw,.98rem)}
+#displayApp .co192-upcoming-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:7px}
+#displayApp .co192-upcoming-card{min-width:0;padding:8px 10px;border-left:4px solid #ffca65;border-radius:10px;background:#ffffff0b;font-size:clamp(.62rem,.8vw,.82rem);line-height:1.18}
+#displayApp .co192-upcoming-card small{display:block;color:#cfc3d5}.co192-upcoming-card b{display:block;overflow-wrap:anywhere}.co192-upcoming-card em{color:#ffca65;font-style:normal;font-weight:950}
+#displayApp .ticker{background:linear-gradient(90deg,#ef6f61,#df5c55);font-size:clamp(.72rem,1vw,1rem);letter-spacing:.01em}
+@keyframes co192pulse{50%{opacity:.45;transform:scale(.78)}}
+@media(min-width:960px) and (orientation:landscape){
+ #displayApp .co192-layout{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:clamp(9px,1.1vh,15px);min-height:0;height:100%}
+ #displayApp .co192-live-grid[data-count="1"]{grid-template-columns:minmax(520px,900px)}
+ #displayApp .co192-live-grid[data-count="2"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #displayApp .co192-bracket-panel{height:100%}
+ #displayApp .co192-bracket-panel .co140-team{font-size:clamp(.72rem,.9vw,1rem)}
+}
+@media(max-width:700px){
+ #displayApp .display-shell{display:block!important;padding:12px 10px 52px!important;height:auto!important;overflow:visible!important}
+ #displayApp .display-title{position:sticky;top:0;z-index:8;margin:-12px -10px 12px;padding:12px 10px 9px;background:#160d1fee;backdrop-filter:blur(14px)}
+ #displayApp .display-title h1{font-size:1.35rem}
+ #displayApp .co192-head-actions .sync-indicator{display:none}
+ #displayApp .co192-live-grid{grid-template-columns:1fr}
+ #displayApp .co192-live-hero{padding:12px;border-radius:17px}
+ #displayApp .co192-score-row{grid-template-columns:minmax(0,1fr) 44px 48px;min-height:61px}
+ #displayApp .co192-team{font-size:.9rem}.co192-games{font-size:1.75rem!important}.co192-points{font-size:1.3rem!important;min-height:40px!important}
+ #displayApp .co192-bracket-panel{margin-top:12px;overflow:visible}
+ #displayApp .co192-bracket-panel .co140-bracket{display:flex!important;overflow-x:auto!important;padding-bottom:10px}
+ #displayApp .co192-bracket-panel .co140-round{flex:0 0 min(88vw,345px)}
+ #displayApp .co192-upcoming-strip{margin-top:12px}.co192-upcoming-list{grid-template-columns:1fr!important}
+}
+</style>
+<script id="co192PublicDisplayRedesignScript">
+/* Final public display renderer. Knockout-only stays bracket-only. Live+Knockout clearly prioritizes ongoing matches. */
+const CO192_BUILD='NOVA-1.9.2-TV-LIVE-KO-REDESIGN-20260927';
+function co192Event(){return S.events.find(x=>x.id===S.display?.eventId)||eventNow()}
+function co192LiveMatches(e){return (S.matches||[]).filter(m=>m.eventId===e.id&&['live','paused'].includes(m.status)&&m.a&&m.b).sort((a,b)=>String(a.courtName||'').localeCompare(String(b.courtName||''),'id',{numeric:true}))}
+function co192Point(m,side){return m.tieBreak?.active?(side==='A'?m.tieBreak.a:m.tieBreak.b):ptxt(m.pointA,m.pointB,side)}
+function co192LiveHtml(e){const live=co192LiveMatches(e);if(!live.length)return '<div class="co192-no-live">Belum ada pertandingan yang sedang berlangsung. Bracket tetap diperbarui otomatis saat match dimulai.</div>';return `<div class="co192-live-grid" data-count="${live.length}">${live.map(m=>{let serv=m.serve?.configured?role(m):null;return `<article class="co192-live-hero"><div class="co192-live-meta"><span class="co192-live-badge">SEDANG BERLANGSUNG</span><span>${esc(m.courtName||'COURT')} · ${esc(m.round||'KNOCKOUT')}</span></div><div class="co192-score-row"><div class="co192-team ${serv?.serving==='A'?'serving':''}">${esc(nameOf(m.eventId,m.a))}</div><div class="co192-games">${m.scoreA}</div><div class="co192-points">${co192Point(m,'A')}</div></div><div class="co192-score-row"><div class="co192-team ${serv?.serving==='B'?'serving':''}">${esc(nameOf(m.eventId,m.b))}</div><div class="co192-games">${m.scoreB}</div><div class="co192-points">${co192Point(m,'B')}</div></div></article>`}).join('')}</div>`}
+function co192Upcoming(e){const seen=new Set(),liveIds=new Set(co192LiveMatches(e).map(m=>m.id));const list=co84Next(e.id).filter(m=>{const key=[m.a,m.b].sort().join('|');if(liveIds.has(m.id)||seen.has(key))return false;seen.add(key);return true}).slice(0,4);if(!list.length)return '';return `<section class="co192-upcoming-strip"><h2>BERIKUTNYA</h2><div class="co192-upcoming-list">${list.map((m,i)=>`<div class="co192-upcoming-card"><small>${i+1}. ${esc(m.courtName||'Lapangan menyusul')} · ${esc(m.round||'Match')}</small><b>${esc(nameOf(m.eventId,m.a))} <em>VS</em> ${esc(nameOf(m.eventId,m.b))}</b></div>`).join('')}</div></section>`}
+function co192Header(e,preset){return `<header class="display-title"><div><span class="eyebrow">${preset==='knockout'?'KNOCKOUT BRACKET':'LIVE KNOCKOUT'}</span><h1>${esc(S.name)}</h1><p>${esc(e.code+' · '+e.name)}</p></div><div class="co192-head-actions"><div class="co192-time"><b id="clock"></b><div class="sync-indicator">REALTIME</div></div><button id="co190Fullscreen" class="co190-tv-button">FULLSCREEN</button></div></header>`}
+function co192Bind(){const clock=$('#clock');if(clock)clock.textContent=new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});const fs=$('#co190Fullscreen');if(fs)fs.onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch{toast('Gunakan menu fullscreen browser/TV')}};requestAnimationFrame(()=>{co150FitDisplay();co180MobileDisplay();co190EnhanceDisplay()})}
+const co192RenderBase=renderDisplay;
+renderDisplay=function(){const preset=S.display?.preset||S.display?.mode||'live-knockout';if(mode()!=='display'||!['knockout','live-knockout'].includes(preset))return co192RenderBase();$('#controlApp').classList.add('hidden');$('#displayApp').classList.remove('hidden');const e=co192Event();co140AdvanceAll();const bracket=co140Bracket(e),live=co192LiveMatches(e),liveSection=preset==='live-knockout'?`<section class="co192-live-zone"><div class="co192-section-head"><h2>PERTANDINGAN AKTIF</h2><span class="co192-live-count">${live.length} LIVE</span></div>${co192LiveHtml(e)}</section>`:'';const title=preset==='knockout'?'BRACKET KNOCKOUT':'BRACKET & PROGRES';$('#displayApp').innerHTML=`<main class="display-shell">${co192Header(e,preset)}<div class="co192-layout">${liveSection}<section class="co192-bracket-panel"><div class="co192-section-head"><h2>${title}</h2><span class="meta" style="color:#cfc3d5">Pemenang otomatis maju</span></div>${bracket}</section>${co192Upcoming(e)}</div><div class="ticker">${esc(S.announcements.find(x=>x.active)?.text||'Selamat datang')}</div></main>`;co192Bind()};
+function co192Brand(){document.documentElement.dataset.build=CO192_BUILD;if(mode()==='control'){document.title='CourtOps Nova V1.9.2 · TV Live Knockout';const p=document.querySelector('.brand p');if(p)p.textContent='TV Live Match + Knockout Focus · NOVA V1.9.2';const l=document.querySelector('.brand .logo');if(l)l.textContent='N9.2'}}
+const co192RenderControl=render;render=function(){co192RenderControl();co192Brand()};co192Brand();if(mode()==='display')renderDisplay();else render();
+</script>
+
+</body></html>
